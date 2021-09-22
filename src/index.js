@@ -1,4 +1,4 @@
-import changeStatus from './todo-status';
+import changeStatus from './changeStatus';
 import './style.css';
 
 const todoTasks = [
@@ -28,14 +28,12 @@ const renderListItems = (listTaks) => {
     const input = document.createElement('input');
 
     input.type = 'checkbox';
-    input.name = "checkbox";
+    input.name = 'checkbox';
     span.innerHTML = task.description;
 
     input.classList.add('input-checkbox');
     li.classList.add('todoitem');
     li.id = task.index;
-
-    if(task.completed) span.classList.add("line-through");
 
     li.appendChild(input);
     li.appendChild(span);
@@ -63,17 +61,17 @@ document.addEventListener('DOMContentLoaded', () => {
   placeholder.appendChild(ul);
   placeholder.appendChild(button);
 
-  const checkboxes = document.querySelectorAll(".input-checkbox");
+  const checkboxes = document.querySelectorAll('.input-checkbox');
 
   checkboxes.forEach((checkbox) => {
-    checkbox.addEventListener('change', function() {
+    checkbox.addEventListener('change', function () {
+      const checkedTask = todoTasks.find((task) => task.index === +this.parentNode.id);
       if (this.checked) {
-        const checkedTask = todoTasks.find((task) => console.log(task.index))
-        console.log()
-        // console.log(checkedTask)
-        // changeStatus(checkedTask);
-        // console.log(this.parentNode.id);
+        this.nextElementSibling.classList.add('line-through');
+      } else {
+        this.nextElementSibling.classList.remove('line-through');
       }
+      changeStatus(checkedTask.completed);
     });
   });
 });
