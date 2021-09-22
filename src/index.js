@@ -1,9 +1,9 @@
-/* eslint-disable func-names */
+import { getLocalStorage } from './localStorage.js';
 
 import changeStatus from './changeStatus.js';
 import './style.css';
 
-let todoTasks = [
+const todoTasks = [
   {
     description: 'Study React Native',
     completed: false,
@@ -20,18 +20,6 @@ let todoTasks = [
     index: 1,
   },
 ];
-
-const setLocalStorage = () => {
-  localStorage.setItem('todos', JSON.stringify(todoTasks));
-};
-
-const getLocalStorage = () => {
-  const data = JSON.parse(localStorage.getItem('todos'));
-
-  if (!data) return;
-
-  todoTasks = data;
-};
 
 const renderListItems = (listTaks) => {
   const liArray = [];
@@ -79,19 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const checkboxes = document.querySelectorAll('.input-checkbox');
 
-  checkboxes.forEach((checkbox) => {
-    checkbox.addEventListener('change', function () {
-      const checkedTask = todoTasks.find((task) => task.index === +this.parentNode.id);
-      checkedTask.completed = changeStatus(checkedTask.completed);
-      this.nextElementSibling.classList.toggle('line-through');
+  changeStatus(todoTasks);
 
-      localStorage.removeItem('todos');
-      setLocalStorage();
-      getLocalStorage();
-    });
-  });
-
-  getLocalStorage();
+  getLocalStorage(todoTasks);
 
   const allLi = document.querySelectorAll('.todoitem');
 
