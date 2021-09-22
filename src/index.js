@@ -59,4 +59,3 @@ document.addEventListener('DOMContentLoaded', () => {
   placeholder.appendChild(ul);
   placeholder.appendChild(button);
 });
-
