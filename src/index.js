@@ -1,4 +1,4 @@
-
+import './style.css';
 
 const todoTasks = [
   {
@@ -18,4 +18,27 @@ const todoTasks = [
   },
 ];
 
+const renderListItems = (listTaks) => {
+  const liArray = [];
+
+  listTaks.forEach((task) => {
+    const li = document.createElement('li');
+    const span = document.createElement('span');
+    const input = document.createElement('input');
+
+    input.type = 'checkbox';
+    span.innerHTML = task.description;
+
+    input.classList.add('input-checkbox');
+    li.classList.add('todoitem');
+    li.id = task.index;
+
+    li.appendChild(input);
+    li.appendChild(span);
+
+    liArray.push(li);
+  });
+
+  return liArray;
+};
 
