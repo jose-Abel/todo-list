@@ -4,7 +4,7 @@ import './style.css';
 let todoTasks = [
   {
     description: 'Study React Native',
-    completed: true,
+    completed: false,
     index: 2,
   },
   {
@@ -78,6 +78,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const checkboxes = document.querySelectorAll('.input-checkbox');
 
   checkboxes.forEach((checkbox) => {
+    if(checkbox.nextElementSibling.classList.contains('line-through')) {
+      console.log(checkbox.nextElementSibling.innerHTML)
+      checkbox.checked = checkbox.checked;
+    }
+
     checkbox.addEventListener('change', function () {
       const checkedTask = todoTasks.find((task) => task.index === +this.parentNode.id);
       checkedTask.completed = changeStatus(checkedTask.completed);
@@ -98,6 +103,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if(task.completed) {
       const liLineThrough = Array.from(allLi).find((li) => +li.id === task.index);
       liLineThrough.children[1].classList.add('line-through');
+    }
+  });
+
+  checkboxes.forEach((checkbox) => {
+
+    if(checkbox.nextElementSibling.classList.contains('line-through')) {
+      checkbox.checked = true;
     }
   })
 });
