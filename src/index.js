@@ -42,3 +42,21 @@ const renderListItems = (listTaks) => {
   return liArray;
 };
 
+document.addEventListener('DOMContentLoaded', () => {
+  const placeholder = document.getElementById('todolist-placeholder');
+  const ul = document.createElement('ul');
+  const button = document.createElement('button');
+
+  button.classList.add('button');
+  button.innerHTML = 'Clear all completed';
+
+  const sortedLi = renderListItems(todoTasks).sort((a, b) => a.id - b.id);
+
+  sortedLi.forEach((li) => {
+    ul.appendChild(li);
+  });
+
+  placeholder.appendChild(ul);
+  placeholder.appendChild(button);
+});
+
