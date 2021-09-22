@@ -1,46 +1,51 @@
+* {
+  box-sizing: inherit;
+  padding: 0;
+  margin: 0;
+}
 
-  body {
-    box-sizing: border-box;
-  }
-  
-  #todolist-placeholder {
-    border: 1px solid black;
-    width: 30%;
-    display: flex;
-    flex-direction: column;
-    margin: 20px;
-  }
-  
-  .todo-heading {
-    border-bottom: 1px solid black;
-    padding: 20px;
-  }
-  
-  .add-input {
-    font-size: 20px;
-    height: 50px;
-    padding: 20px;
-  }
-  
-  .add-input::placeholder {
-    font-size: 15px;
-    font-style: italic;
-  }
-  
-  .add-input:focus {
-    outline: none;
-  }
-  
-  .todoitem {
-    list-style: none;
-    padding: 20px;
-  }
-  
-  .input-checkbox {
-    margin-right: 10px;
-  }
-  
-  .button {
-    width: 100%;
-    padding: 15px;
-  }
+body {
+  box-sizing: border-box;
+}
+
+#todolist-placeholder {
+  border: 1px solid black;
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+}
+
+.todo-heading {
+  border-bottom: 1px solid black;
+  padding: 20px;
+}
+
+.add-input {
+  font-size: 20px;
+  height: 50px;
+  padding: 20px;
+}
+
+.add-input::placeholder {
+  font-size: 15px;
+  font-style: italic;
+}
+
+.add-input:focus {
+  outline: none;
+}
+
+.todoitem {
+  list-style: none;
+  padding: 20px;
+}
+
+.input-checkbox {
+  margin-right: 10px;
+}
+
+.button {
+  width: 100%;
+  padding: 15px;
+}
