@@ -1,7 +1,7 @@
-import changeStatus from './changeStatus';
+import changeStatus from './changeStatus.js';
 import './style.css';
 
-const todoTasks = [
+let todoTasks = [
   {
     description: 'Study React Native',
     completed: true,
@@ -19,6 +19,18 @@ const todoTasks = [
   },
 ];
 
+const setLocalStorage = () => {
+  localStorage.setItem('todos', JSON.stringify(todoTasks));
+}
+
+const getLocalStorage = () => {
+  const data = JSON.parse(localStorage.getItem('todos'));
+
+  if (!data) return;
+
+  todoTasks = data;
+}
+
 const renderListItems = (listTaks) => {
   const liArray = [];
 
@@ -34,6 +46,8 @@ const renderListItems = (listTaks) => {
     input.classList.add('input-checkbox');
     li.classList.add('todoitem');
     li.id = task.index;
+
+    if(task.completed) span.classList.add('line-through');
 
     li.appendChild(input);
     li.appendChild(span);
@@ -66,12 +80,24 @@ document.addEventListener('DOMContentLoaded', () => {
   checkboxes.forEach((checkbox) => {
     checkbox.addEventListener('change', function () {
       const checkedTask = todoTasks.find((task) => task.index === +this.parentNode.id);
-      if (this.checked) {
-        this.nextElementSibling.classList.add('line-through');
-      } else {
-        this.nextElementSibling.classList.remove('line-through');
-      }
-      changeStatus(checkedTask.completed);
+      checkedTask.completed = changeStatus(checkedTask.completed);
+
+      this.nextElementSibling.classList.toggle('line-through');
+
+      localStorage.removeItem("todos");
+      setLocalStorage();
+      getLocalStorage();
     });
   });
+
+  getLocalStorage();
+
+  const allLi = document.querySelectorAll(".todoitem");
+
+  todoTasks.forEach((task) => {
+    if(task.completed) {
+      const liLineThrough = Array.from(allLi).find((li) => +li.id === task.index);
+      liLineThrough.children[1].classList.add('line-through');
+    }
+  })
 });
