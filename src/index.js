@@ -1,3 +1,5 @@
+/* eslint-disable func-names */
+
 import changeStatus from './changeStatus.js';
 import './style.css';
 
@@ -21,7 +23,7 @@ let todoTasks = [
 
 const setLocalStorage = () => {
   localStorage.setItem('todos', JSON.stringify(todoTasks));
-}
+};
 
 const getLocalStorage = () => {
   const data = JSON.parse(localStorage.getItem('todos'));
@@ -29,7 +31,7 @@ const getLocalStorage = () => {
   if (!data) return;
 
   todoTasks = data;
-}
+};
 
 const renderListItems = (listTaks) => {
   const liArray = [];
@@ -47,7 +49,7 @@ const renderListItems = (listTaks) => {
     li.classList.add('todoitem');
     li.id = task.index;
 
-    if(task.completed) span.classList.add('line-through');
+    if (task.completed) span.classList.add('line-through');
 
     li.appendChild(input);
     li.appendChild(span);
@@ -78,18 +80,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const checkboxes = document.querySelectorAll('.input-checkbox');
 
   checkboxes.forEach((checkbox) => {
-    if(checkbox.nextElementSibling.classList.contains('line-through')) {
-      console.log(checkbox.nextElementSibling.innerHTML)
-      checkbox.checked = checkbox.checked;
-    }
-
     checkbox.addEventListener('change', function () {
       const checkedTask = todoTasks.find((task) => task.index === +this.parentNode.id);
       checkedTask.completed = changeStatus(checkedTask.completed);
-
       this.nextElementSibling.classList.toggle('line-through');
 
-      localStorage.removeItem("todos");
+      localStorage.removeItem('todos');
       setLocalStorage();
       getLocalStorage();
     });
@@ -97,19 +93,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   getLocalStorage();
 
-  const allLi = document.querySelectorAll(".todoitem");
+  const allLi = document.querySelectorAll('.todoitem');
 
   todoTasks.forEach((task) => {
-    if(task.completed) {
+    if (task.completed) {
       const liLineThrough = Array.from(allLi).find((li) => +li.id === task.index);
       liLineThrough.children[1].classList.add('line-through');
     }
   });
 
   checkboxes.forEach((checkbox) => {
-
-    if(checkbox.nextElementSibling.classList.contains('line-through')) {
+    if (checkbox.nextElementSibling.classList.contains('line-through')) {
       checkbox.checked = true;
     }
-  })
+  });
 });
