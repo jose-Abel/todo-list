@@ -49,3 +49,7 @@ body {
   width: 100%;
   padding: 15px;
 }
+
+.line-through {
+  text-decoration: line-through;
+}
