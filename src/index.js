@@ -1,9 +1,7 @@
-import { getLocalStorage } from './localStorage.js';
-
 import changeStatus from './changeStatus.js';
 import './style.css';
 
-const todoTasks = [
+let todoTasks = [
   {
     description: 'Study React Native',
     completed: false,
@@ -20,6 +18,18 @@ const todoTasks = [
     index: 1,
   },
 ];
+
+const setLocalStorage = () => {
+  localStorage.setItem('todos', JSON.stringify(todoTasks));
+};
+
+const getLocalStorage = () => {
+  const data = JSON.parse(localStorage.getItem('todos'));
+
+  if (!data) return;
+
+  todoTasks = data;
+};
 
 const renderListItems = (listTaks) => {
   const liArray = [];
@@ -52,28 +62,50 @@ document.addEventListener('DOMContentLoaded', () => {
   const placeholder = document.getElementById('todolist-placeholder');
   const ul = document.createElement('ul');
   const button = document.createElement('button');
+  const listRendered = renderListItems(todoTasks);
 
   button.classList.add('button');
   button.innerHTML = 'Clear all completed';
 
-  const sortedLi = renderListItems(todoTasks).sort((a, b) => a.id - b.id);
+  placeholder.appendChild(ul);
+  placeholder.appendChild(button);
+
+  const sortedLi =  listRendered.sort((a, b) => a.id - b.id);
 
   sortedLi.forEach((li) => {
     ul.appendChild(li);
   });
 
-  placeholder.appendChild(ul);
-  placeholder.appendChild(button);
-
   const checkboxes = document.querySelectorAll('.input-checkbox');
 
-  changeStatus(todoTasks);
+  //---------------------------------------------------------------------------------
 
-  getLocalStorage(todoTasks);
+  const checkboxHandler = (todoTasks, checkbox) => {
+
+  }
+  
+  checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener('change', function() {
+      const checkedTask = todoTasks.find((task) => task.index === +this.parentNode.id);
+
+      checkedTask.completed = !checkedTask.completed;
+    
+      this.nextElementSibling.classList.toggle('line-through');
+  
+      localStorage.removeItem('todos');
+      setLocalStorage();
+      getLocalStorage();
+    });
+  });
+
+  //---------------------------------------------------------------------------------
 
   const allLi = document.querySelectorAll('.todoitem');
+  
+  getLocalStorage();
 
   todoTasks.forEach((task) => {
+    console.log(task)
     if (task.completed) {
       const liLineThrough = Array.from(allLi).find((li) => +li.id === task.index);
       liLineThrough.children[1].classList.add('line-through');
@@ -85,4 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
       checkbox.checked = true;
     }
   });
+
+  setLocalStorage();
 });

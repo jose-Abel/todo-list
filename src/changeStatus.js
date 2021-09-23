@@ -1,20 +1,27 @@
-/* eslint-disable func-names */
+// import { setLocalStorage } from './localStorage.js';
 
-import { setLocalStorage, getLocalStorage } from './localStorage.js';
+const checkboxHandler = (todoTasks, checkbox) => {
+  const checkedTask = todoTasks.find((task) => {
+    if(task.index === +checkbox.target.parentNode.id) {
+      console.log(`task.index ${task.index} checkbox.target.parentNode.id ${+checkbox.target.parentNode.id}`)
+      return task.index === +checkbox.target.parentNode.id;
+    }
+  });
+  if(checkedTask.completed) {
+    checkedTask.completed = false;
+  } else {
+    checkedTask.completed = true;
+  }
+  checkbox.target.nextElementSibling.classList.toggle('line-through');
+  getLocalStorage();
+  setLocalStorage();
+}
 
 const changeStatus = (todoTasks) => {
   const checkboxes = document.querySelectorAll('.input-checkbox');
 
   checkboxes.forEach((checkbox) => {
-    checkbox.addEventListener('change', function () {
-      const checkedTask = todoTasks.find((task) => task.index === +this.parentNode.id);
-      checkedTask.completed = !checkedTask.completed;
-      this.nextElementSibling.classList.toggle('line-through');
-
-      localStorage.removeItem('todos');
-      setLocalStorage(todoTasks);
-      getLocalStorage(todoTasks);
-    });
+    checkbox.addEventListener('change', checkboxHandler.bind(this, todoTasks));
   });
 };
 
