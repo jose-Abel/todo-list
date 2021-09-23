@@ -30,6 +30,7 @@ const createAllLiElement = (todosTasks) => {
     span.innerHTML = task.description;
     li.id = task.index;
     li.classList.add('todoitem');
+    span.classList.add('description');
 
     input.type = 'checkbox';
     input.classList.add('input-checkbox');
@@ -57,11 +58,9 @@ const createAllLiElement = (todosTasks) => {
 
 const deleteUlFromDOM = () => {
   const placeholder = document.getElementById('todolist-placeholder');
-  const allUl = document.querySelectorAll("ul");
+  const ul = document.querySelector("ul");
   const button = document.querySelector('.button');
-  allUl.forEach((ul) => {
-    ul.innerHTML = '';
-  });
+  placeholder.removeChild(ul);
   placeholder.removeChild(button);
 }
 
@@ -97,12 +96,67 @@ const checkingBoxesAndLine = () => {
   setLocalStorage();
 }
 
+const changeInputToSpan = (inputDescription) => {
+  const parentLi = inputDescription.parentNode;
+
+  const span = document.createElement('span');
+  span.classList.add('description');
+
+  inputDescription.insertAdjacentElement('beforebegin', span);
+  span.innerHTML = inputDescription.value;
+
+  if(parentLi) {
+    parentLi.removeChild(inputDescription);
+
+    if(parentLi.classList.contains('input-description-bg')) {
+      parentLi.classList.remove('input-description-bg');
+    }
+  }
+
+  const allSpan = document.querySelectorAll('.description');
+
+  allSpan.forEach((span) => {
+    span.addEventListener('click', () => {
+      changeSpanToInput(span);
+    });
+  });
+}
+
+const changeSpanToInput = (span) => {
+  const parentLi = span.parentNode;
+
+  const inputDescription = document.createElement('input');
+  inputDescription.type = 'text';
+  inputDescription.classList.add('input-description');
+
+  span.insertAdjacentElement('beforebegin', inputDescription);
+  
+  inputDescription.value = span.innerHTML;
+  inputDescription.focus();
+  inputDescription.setSelectionRange(0, 0);
+
+  if(parentLi) {
+    parentLi.removeChild(span);
+    parentLi.classList.add('input-description-bg');
+    inputDescription.classList.add('input-description-bg')
+  }
+
+  const allInputDescriptions = document.querySelectorAll('.input-description');
+  
+  if(allInputDescriptions) {
+    allInputDescriptions.forEach((inputDescription) => {
+      inputDescription.addEventListener('focusout', () => {
+        changeInputToSpan(inputDescription);
+      })
+    })
+  }
+
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
   const addInput = document.getElementById('add-input');
-  //--------------------------------------------------------------------------
   createAllLiElement(todosTasks);
-  //-------------------------------------------------------------------------
 
   addInput.addEventListener('keyup', (event) => {
     if (event.code === 'Enter') {
@@ -113,6 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         deleteUlFromDOM();
         createAllLiElement(todosTasks);
         checkingBoxesAndLine();
+        addInput.value = '';
       }
     }
   });
@@ -120,6 +175,14 @@ document.addEventListener('DOMContentLoaded', () => {
   getLocalStorage();
   deleteUlFromDOM();
   createAllLiElement(todosTasks);
-  checkingBoxesAndLine();
 
+  const allSpan = document.querySelectorAll('.description');
+
+  allSpan.forEach((span) => {
+    span.addEventListener('click', () => {
+      changeSpanToInput(span);
+    });
+  });
+
+  checkingBoxesAndLine();
 });

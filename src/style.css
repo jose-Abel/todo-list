@@ -53,3 +53,22 @@ body {
 .line-through {
   text-decoration: line-through;
 }
+
+.input-description {
+  font-size: 15px;
+  height: 10px;
+  padding: 10px 0;
+  border:0;
+  outline: 0;
+  -webkit-appearance: none;
+}
+
+.input-description:focus{
+  /* border:0;
+  outline: 0; */
+  /* -webkit-appearance: none; */
+}
+
+.input-description-bg {
+  background-color: bisque;
+}
