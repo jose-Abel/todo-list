@@ -124,33 +124,53 @@ const changeInputToSpan = (inputDescription) => {
 
 const changeSpanToInput = (span) => {
   const parentLi = span.parentNode;
+  let taskOfLi;
+  if (parentLi) {
+    taskOfLi = todosTasks.find((task) => task.index === +parentLi.id);
+  }
+  // console.log(taskOfLi)
 
   const inputDescription = document.createElement('input');
   inputDescription.type = 'text';
   inputDescription.classList.add('input-description');
 
   span.insertAdjacentElement('beforebegin', inputDescription);
-  
+
   inputDescription.value = span.innerHTML;
   inputDescription.focus();
   inputDescription.setSelectionRange(0, 0);
 
-  if(parentLi) {
+  setLocalStorage();
+
+  if (parentLi) {
     parentLi.removeChild(span);
     parentLi.classList.add('input-description-bg');
     inputDescription.classList.add('input-description-bg')
   }
 
   const allInputDescriptions = document.querySelectorAll('.input-description');
-  
-  if(allInputDescriptions) {
+
+  if (allInputDescriptions) {
     allInputDescriptions.forEach((inputDescription) => {
       inputDescription.addEventListener('focusout', () => {
+        if (taskOfLi) {
+          taskOfLi.description = inputDescription.value;
+          setLocalStorage();
+        }
         changeInputToSpan(inputDescription);
-      })
-    })
-  }
+      });
 
+      inputDescription.addEventListener('keyup', (event) => {
+        if (event.code === 'Enter') {
+          if (taskOfLi) {
+            inputDescription.blur();
+            taskOfLi.description = inputDescription.value;
+            setLocalStorage();
+          }
+        }
+      });
+    });
+  }
 }
 
 
@@ -163,11 +183,20 @@ document.addEventListener('DOMContentLoaded', () => {
       if(addInput.value) {
         const newTask = addTask(todosTasks, addInput.value);
         todosTasks.push(newTask);
+
         setLocalStorage();
         deleteUlFromDOM();
         createAllLiElement(todosTasks);
         checkingBoxesAndLine();
         addInput.value = '';
+
+        const allSpan = document.querySelectorAll('.description');
+
+        allSpan.forEach((span) => {
+          span.addEventListener('click', () => {
+            changeSpanToInput(span);
+          });
+        });
       }
     }
   });
