@@ -1,26 +1,11 @@
 import statusUpdate from './statusUpdate.js';
+import { addTask, editTask, removeTask } from './add-remove.js';
 import './style.css';
 
-let todoTasks = [
-  {
-    description: 'Study React Native',
-    completed: false,
-    index: 2,
-  },
-  {
-    description: 'Go to the supermarket',
-    completed: false,
-    index: 3,
-  },
-  {
-    description: 'Do my Microverse tasks',
-    completed: false,
-    index: 1,
-  },
-];
+let todosTasks = [];
 
 const setLocalStorage = () => {
-  localStorage.setItem('todos', JSON.stringify(todoTasks));
+  localStorage.setItem('todos', JSON.stringify(todosTasks));
 };
 
 const getLocalStorage = () => {
@@ -28,23 +13,26 @@ const getLocalStorage = () => {
 
   if (!data) return;
 
-  todoTasks = data;
+  todosTasks = data;
 };
 
-const renderListItems = (listTaks) => {
+const createAllLiElement = (todosTasks) => {
+  const placeholder = document.getElementById('todolist-placeholder');
+  const ul = document.createElement('ul');
+  const button = document.createElement('button');
   const liArray = [];
 
-  listTaks.forEach((task) => {
+  todosTasks.forEach((task) => {
     const li = document.createElement('li');
-    const span = document.createElement('span');
     const input = document.createElement('input');
+    const span = document.createElement('span');
+    
+    span.innerHTML = task.description;
+    li.id = task.index;
+    li.classList.add('todoitem');
 
     input.type = 'checkbox';
-    span.innerHTML = task.description;
-
     input.classList.add('input-checkbox');
-    li.classList.add('todoitem');
-    li.id = task.index;
 
     if (task.completed) span.classList.add('line-through');
 
@@ -54,54 +42,84 @@ const renderListItems = (listTaks) => {
     liArray.push(li);
   });
 
-  return liArray;
-};
-
-document.addEventListener('DOMContentLoaded', () => {
-  const placeholder = document.getElementById('todolist-placeholder');
-  const ul = document.createElement('ul');
-  const button = document.createElement('button');
-  const listRendered = renderListItems(todoTasks);
-
   button.classList.add('button');
   button.innerHTML = 'Clear all completed';
 
-  placeholder.appendChild(ul);
-  placeholder.appendChild(button);
-
-  const sortedLi = listRendered.sort((a, b) => a.id - b.id);
+  const sortedLi = liArray.sort((a, b) => a.id - b.id);
 
   sortedLi.forEach((li) => {
     ul.appendChild(li);
   });
 
+  placeholder.appendChild(ul);
+  placeholder.appendChild(button);
+};
+
+const deleteUlFromDOM = () => {
+  const placeholder = document.getElementById('todolist-placeholder');
+  const allUl = document.querySelectorAll("ul");
+  const button = document.querySelector('.button');
+  allUl.forEach((ul) => {
+    ul.innerHTML = '';
+  });
+  placeholder.removeChild(button);
+}
+
+const checkingBoxesAndLine = () => {
   const checkboxes = document.querySelectorAll('.input-checkbox');
+  const allLi = document.querySelectorAll('.todoitem');
 
   checkboxes.forEach((checkbox) => {
     checkbox.addEventListener('change', function checkboxHandler() {
-      statusUpdate(todoTasks, this);
+      statusUpdate(todosTasks, this);
 
       setLocalStorage();
-      getLocalStorage();
     });
   });
 
-  const allLi = document.querySelectorAll('.todoitem');
-
   getLocalStorage();
 
-  todoTasks.forEach((task) => {
-    if (task.completed) {
-      const liLineThrough = Array.from(allLi).find((li) => +li.id === task.index);
-      liLineThrough.children[1].classList.add('line-through');
-    }
-  });
+  if (todosTasks.length > 0) {
+    todosTasks.forEach((task) => {
+      if (task.completed) {
+        const liLineThrough = Array.from(allLi).find((li) => +li.id === task.index);
+        liLineThrough.children[1].classList.add('line-through');
+      }
+    });
 
-  checkboxes.forEach((checkbox) => {
-    if (checkbox.nextElementSibling.classList.contains('line-through')) {
-      checkbox.checked = true;
-    }
-  });
+    checkboxes.forEach((checkbox) => {
+      if (checkbox.nextElementSibling.classList.contains('line-through')) {
+        checkbox.checked = true;
+      }
+    });
+  }
 
   setLocalStorage();
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const addInput = document.getElementById('add-input');
+  //--------------------------------------------------------------------------
+  createAllLiElement(todosTasks);
+  //-------------------------------------------------------------------------
+
+  addInput.addEventListener('keyup', (event) => {
+    if (event.code === 'Enter') {
+      if(addInput.value) {
+        const newTask = addTask(todosTasks, addInput.value);
+        todosTasks.push(newTask);
+        setLocalStorage();
+        deleteUlFromDOM();
+        createAllLiElement(todosTasks);
+        checkingBoxesAndLine();
+      }
+    }
+  });
+
+  getLocalStorage();
+  deleteUlFromDOM();
+  createAllLiElement(todosTasks);
+  checkingBoxesAndLine();
+
 });

@@ -1,5 +1,5 @@
-const changeStatus = (todoTasks, checkbox) => {
-  const checkedTask = todoTasks.find((task) => task.index === +checkbox.parentNode.id);
+const changeStatus = (todosTasks, checkbox) => {
+  const checkedTask = todosTasks.find((task) => task.index === +checkbox.parentNode.id);
 
   checkedTask.completed = !checkedTask.completed;
 
