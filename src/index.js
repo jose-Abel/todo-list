@@ -1,9 +1,10 @@
+import statusUpdate from './statusUpdate.js';
 import './style.css';
 
-const todoTasks = [
+let todoTasks = [
   {
     description: 'Study React Native',
-    completed: true,
+    completed: false,
     index: 2,
   },
   {
@@ -17,6 +18,18 @@ const todoTasks = [
     index: 1,
   },
 ];
+
+const setLocalStorage = () => {
+  localStorage.setItem('todos', JSON.stringify(todoTasks));
+};
+
+const getLocalStorage = () => {
+  const data = JSON.parse(localStorage.getItem('todos'));
+
+  if (!data) return;
+
+  todoTasks = data;
+};
 
 const renderListItems = (listTaks) => {
   const liArray = [];
@@ -33,6 +46,8 @@ const renderListItems = (listTaks) => {
     li.classList.add('todoitem');
     li.id = task.index;
 
+    if (task.completed) span.classList.add('line-through');
+
     li.appendChild(input);
     li.appendChild(span);
 
@@ -46,16 +61,47 @@ document.addEventListener('DOMContentLoaded', () => {
   const placeholder = document.getElementById('todolist-placeholder');
   const ul = document.createElement('ul');
   const button = document.createElement('button');
+  const listRendered = renderListItems(todoTasks);
 
   button.classList.add('button');
   button.innerHTML = 'Clear all completed';
 
-  const sortedLi = renderListItems(todoTasks).sort((a, b) => a.id - b.id);
+  placeholder.appendChild(ul);
+  placeholder.appendChild(button);
+
+  const sortedLi = listRendered.sort((a, b) => a.id - b.id);
 
   sortedLi.forEach((li) => {
     ul.appendChild(li);
   });
 
-  placeholder.appendChild(ul);
-  placeholder.appendChild(button);
+  const checkboxes = document.querySelectorAll('.input-checkbox');
+
+  checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener('change', function checkboxHandler() {
+      statusUpdate(todoTasks, this);
+
+      setLocalStorage();
+      getLocalStorage();
+    });
+  });
+
+  const allLi = document.querySelectorAll('.todoitem');
+
+  getLocalStorage();
+
+  todoTasks.forEach((task) => {
+    if (task.completed) {
+      const liLineThrough = Array.from(allLi).find((li) => +li.id === task.index);
+      liLineThrough.children[1].classList.add('line-through');
+    }
+  });
+
+  checkboxes.forEach((checkbox) => {
+    if (checkbox.nextElementSibling.classList.contains('line-through')) {
+      checkbox.checked = true;
+    }
+  });
+
+  setLocalStorage();
 });
