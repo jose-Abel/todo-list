@@ -40,7 +40,6 @@ const renderListItems = (listTaks) => {
     const input = document.createElement('input');
 
     input.type = 'checkbox';
-    input.name = 'checkbox';
     span.innerHTML = task.description;
 
     input.classList.add('input-checkbox');
