@@ -67,7 +67,7 @@ CSS linters
 
 ## Author: Jose Abel Ramirez Frontany**
 
-- GitHub: [Jose Abel Ramirez](https://github.com/jose-Abel)
+- GitHub: [Jose Abel Ramirez Frontany](https://github.com/jose-Abel)
 - Linkedin: [Jose Abel Ramirez Frontany](https://www.linkedin.com/in/jose-abel-ramirez-frontany-7674a842/)
 
 ## 🤝 Contributing

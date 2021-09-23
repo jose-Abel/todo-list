@@ -1,4 +1,4 @@
-import changeStatus from './changeStatus.js';
+import statusUpdate from './statusUpdate.js';
 import './style.css';
 
 let todoTasks = [
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
   placeholder.appendChild(ul);
   placeholder.appendChild(button);
 
-  const sortedLi =  listRendered.sort((a, b) => a.id - b.id);
+  const sortedLi = listRendered.sort((a, b) => a.id - b.id);
 
   sortedLi.forEach((li) => {
     ul.appendChild(li);
@@ -78,34 +78,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const checkboxes = document.querySelectorAll('.input-checkbox');
 
-  //---------------------------------------------------------------------------------
-
-  const checkboxHandler = (todoTasks, checkbox) => {
-
-  }
-  
   checkboxes.forEach((checkbox) => {
-    checkbox.addEventListener('change', function() {
-      const checkedTask = todoTasks.find((task) => task.index === +this.parentNode.id);
+    checkbox.addEventListener('change', function checkboxHandler() {
+      statusUpdate(todoTasks, this);
 
-      checkedTask.completed = !checkedTask.completed;
-    
-      this.nextElementSibling.classList.toggle('line-through');
-  
-      localStorage.removeItem('todos');
       setLocalStorage();
       getLocalStorage();
     });
   });
 
-  //---------------------------------------------------------------------------------
-
   const allLi = document.querySelectorAll('.todoitem');
-  
+
   getLocalStorage();
 
   todoTasks.forEach((task) => {
-    console.log(task)
     if (task.completed) {
       const liLineThrough = Array.from(allLi).find((li) => +li.id === task.index);
       liLineThrough.children[1].classList.add('line-through');
