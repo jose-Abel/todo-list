@@ -1,3 +1,5 @@
+/* eslint-disable import/no-mutable-exports */
+
 let todosTasks = [];
 
 const setLocalStorage = () => {
@@ -14,6 +16,8 @@ const getLocalStorage = () => {
 
 const changeTodosTasks = (newTodos) => {
   todosTasks = newTodos;
-}
+};
 
-export { setLocalStorage, getLocalStorage, todosTasks, changeTodosTasks }
+export {
+  setLocalStorage, getLocalStorage, todosTasks, changeTodosTasks,
+};

@@ -1,5 +1,7 @@
 import statusUpdate from './statusUpdate.js';
-import { addTask, editTask, addDeleteIcon, removeAllCompletedTasks } from './add-edit-remove.js';
+import {
+  addTask, editTask, addDeleteIcon, removeAllCompletedTasks,
+} from './add-edit-remove.js';
 import { setLocalStorage, getLocalStorage, todosTasks } from './myLocalStorage.js';
 import './style.css';
 
@@ -13,7 +15,7 @@ const createAllLiElement = (todosTasks) => {
     const li = document.createElement('li');
     const input = document.createElement('input');
     const span = document.createElement('span');
-    
+
     span.innerHTML = task.description;
     li.id = task.index;
     li.classList.add('todoitem');
@@ -35,7 +37,7 @@ const createAllLiElement = (todosTasks) => {
 
   button.addEventListener('click', () => {
     removeAllCompletedTasks();
-  })
+  });
 
   const sortedLi = liArray.sort((a, b) => a.id - b.id);
 
@@ -49,11 +51,11 @@ const createAllLiElement = (todosTasks) => {
 
 const deleteUlFromDOM = () => {
   const placeholder = document.getElementById('todolist-placeholder');
-  const ul = document.querySelector("ul");
+  const ul = document.querySelector('ul');
   const button = document.querySelector('.button');
   placeholder.removeChild(ul);
   placeholder.removeChild(button);
-}
+};
 
 const checkingBoxesAndLine = () => {
   const checkboxes = document.querySelectorAll('.input-checkbox');
@@ -85,7 +87,7 @@ const checkingBoxesAndLine = () => {
   }
 
   setLocalStorage();
-}
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   const addInput = document.getElementById('add-input');
@@ -130,5 +132,4 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   checkingBoxesAndLine();
-
-})
+});

@@ -1,3 +1,5 @@
+/* eslint-disable no-use-before-define */
+
 import { setLocalStorage, todosTasks, changeTodosTasks } from './myLocalStorage.js';
 
 const addDeleteIcon = (span) => {
@@ -13,14 +15,14 @@ const addDeleteIcon = (span) => {
   deleteSpanIcon.addEventListener('click', () => {
     removeTask(parentLi);
   });
-}
+};
 
 const removeDeleteIcon = (deleteIcon) => {
   const parentLi = deleteIcon.parentNode;
-  if(parentLi) {
+  if (parentLi) {
     parentLi.removeChild(deleteIcon);
   }
-}
+};
 
 const changeInputToSpan = (inputDescription, hasTheLineThroughClass) => {
   const parentLi = inputDescription.parentNode;
@@ -35,10 +37,10 @@ const changeInputToSpan = (inputDescription, hasTheLineThroughClass) => {
     span.classList.add('line-through');
   }
 
-  if(parentLi) {
+  if (parentLi) {
     parentLi.removeChild(inputDescription);
 
-    if(parentLi.classList.contains('input-description-bg')) {
+    if (parentLi.classList.contains('input-description-bg')) {
       parentLi.classList.remove('input-description-bg');
     }
   }
@@ -51,16 +53,16 @@ const changeInputToSpan = (inputDescription, hasTheLineThroughClass) => {
       editTask(span);
     });
   });
-}
+};
 
 const addTask = (todosTasks, value) => {
-  const newTask = {}
+  const newTask = {};
   newTask.description = value;
   newTask.completed = false;
   newTask.index = todosTasks.length + 1;
 
   return newTask;
-}
+};
 
 const removeTask = (parentLi) => {
   const taskFromLi = todosTasks.find((task) => task.index === +parentLi.id);
@@ -68,12 +70,12 @@ const removeTask = (parentLi) => {
   const newTodos = todosTasks.filter((task) => task.index !== taskFromLi.index);
 
   const [deletedTodo] = todosTasks.filter((task) => task.index === taskFromLi.index);
-  
+
   newTodos.forEach((todo) => {
-    if(todo.index > deletedTodo.index) {
+    if (todo.index > deletedTodo.index) {
       todo.index -= 1;
     }
-  })
+  });
 
   changeTodosTasks(newTodos);
 
@@ -82,13 +84,13 @@ const removeTask = (parentLi) => {
   ul.removeChild(parentLi);
 
   setLocalStorage();
-}
+};
 
 const removeAllCompletedTasks = () => {
   const newTodos = todosTasks.filter((task) => !task.completed);
   const todosToDelete = todosTasks.filter((task) => task.completed);
   const allLi = document.querySelectorAll('.todoitem');
-  const ul = document.querySelector("ul");
+  const ul = document.querySelector('ul');
 
   const liToDelete = [];
 
@@ -97,43 +99,43 @@ const removeAllCompletedTasks = () => {
       if (todo.index === +li.id) {
         liToDelete.push(li);
       }
-    })
-  })
+    });
+  });
 
   const allDeletedTodos = todosTasks.filter((task) => task.completed);
 
   newTodos.forEach((todo) => {
     allDeletedTodos.forEach((deleted) => {
-      if(todo.index > deleted.index) {
+      if (todo.index > deleted.index) {
         todo.index -= 1;
       }
 
-      if(todo.index > newTodos.length) {
+      if (todo.index > newTodos.length) {
         todo.index = newTodos.length;
       }
-    })
+    });
   });
 
   changeTodosTasks(newTodos);
 
-  if(!allLi) {
+  if (!allLi) {
     const ulParent = ul.parentNode;
     ulParent.removeChild(ul);
   }
 
-  if(liToDelete) {
+  if (liToDelete) {
     liToDelete.forEach((li) => {
       ul.removeChild(li);
-    })
+    });
   }
 
   setLocalStorage();
-}
+};
 
 const editTask = (span) => {
   const parentLi = span.parentNode;
   const deleteIcon = document.querySelector('.delete-icon');
-  let hasTheLineThroughClass = span.classList.contains('line-through');
+  const hasTheLineThroughClass = span.classList.contains('line-through');
 
   let taskFromLi;
 
@@ -154,9 +156,9 @@ const editTask = (span) => {
   if (parentLi) {
     parentLi.removeChild(span);
     parentLi.classList.add('input-description-bg');
-    inputElement.classList.add('input-description-bg')
+    inputElement.classList.add('input-description-bg');
   }
-  
+
   if (inputElement) {
     inputElement.addEventListener('blur', () => {
       document.addEventListener('click', () => {
@@ -166,11 +168,9 @@ const editTask = (span) => {
           removeDeleteIcon(deleteIcon);
           changeInputToSpan(inputElement, hasTheLineThroughClass);
         }
-      })
+      });
     });
 
-    //-------------------------------------------------------------------------------------------------------
-    // TODO check if when Enter is pressed the todo is edit as usual
     inputElement.addEventListener('keyup', (event) => {
       if (event.code === 'Enter') {
         if (inputElement.value !== '') {
@@ -182,8 +182,9 @@ const editTask = (span) => {
         }
       }
     });
-    //-------------------------------------------------------------------------------------------------------
   }
-}
+};
 
-export { addTask, editTask, removeTask, addDeleteIcon, removeAllCompletedTasks };
+export {
+  addTask, editTask, removeTask, addDeleteIcon, removeAllCompletedTasks,
+};
