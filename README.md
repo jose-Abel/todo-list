@@ -2,7 +2,9 @@
 
 # Todo List - Jose Abel Ramirez Frontany
 
-<!-- ![screenshot]() -->
+ToDo's Tasks App where you can add a todo, edit the todo by clicking on it, change the completed property of the todo object from false to true by checking the checkbox and a line-through CSS property will be display on the description of the todo, and finally can delete one particular todo by clicking the delete trashcan icon when in edit mode and also delete all completed todo's by clicking the 'clear all completed' button at the bottom. All changes are saved on the localhost browser storage.
+
+![screenshot](./app_screenshot.png)
 
 ## Built With
 
@@ -42,7 +44,7 @@ To start the webpack-dev-server, run the following command:
 
 ### Live Demo Server
 
-<!-- - [live-version]() -->
+- [live-version](https://jose-abel-todo-app.netlify.app/)
 
 ### Tests
 
@@ -65,7 +67,7 @@ CSS linters
     npx stylelint "**/*.{css,scss}"
 ```
 
-## Author: Jose Abel Ramirez Frontany**
+## Author: Jose Abel Ramirez Frontany\*\*
 
 - GitHub: [Jose Abel Ramirez Frontany](https://github.com/jose-Abel)
 - Linkedin: [Jose Abel Ramirez Frontany](https://www.linkedin.com/in/jose-abel-ramirez-frontany-7674a842/)
@@ -74,11 +76,9 @@ CSS linters
 
 Contributions, issues, and feature requests are welcome!
 
-
 ## 📝 License
 
 This project is MIT licensed.
-
 
 ## Show your support
 
