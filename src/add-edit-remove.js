@@ -1,4 +1,4 @@
-import { setLocalStorage, todosTasks } from './myLocalStorage.js';
+import { setLocalStorage, todosTasks, changeTodosTasks } from './myLocalStorage.js';
 
 const addDeleteIcon = (span) => {
   const parentLi = span.parentNode;
@@ -27,11 +27,6 @@ const changeInputToSpan = (inputDescription) => {
 
   const span = document.createElement('span');
   span.classList.add('description');
-
-  if(inputDescription.description === '') {
-    console.log('Is empty')
-    return
-  }
 
   inputDescription.insertAdjacentElement('beforebegin', span);
   span.innerHTML = inputDescription.value;
@@ -63,14 +58,32 @@ const addTask = (todosTasks, value) => {
   return newTask;
 }
 
-
 const removeTask = (parentLi) => {
   const taskFromLi = todosTasks.find((task) => task.index === +parentLi.id);
+
+  const newTodos = todosTasks.filter((task) => task.index !== taskFromLi.index);
+
+  const [deletedTodo] = todosTasks.filter((task) => task.index === taskFromLi.index);
+  
+  newTodos.forEach((todo) => {
+    if(todo.index > deletedTodo.index) {
+      todo.index -= 1;
+    }
+  })
+
+  changeTodosTasks(newTodos);
+
+  const ul = parentLi.parentNode;
+
+  ul.removeChild(parentLi);
+
+  setLocalStorage();
 }
 
 const editTask = (span) => {
   const parentLi = span.parentNode;
   const deleteIcon = document.querySelector('.delete-icon');
+
   let taskFromLi;
 
   if (parentLi) {
@@ -92,15 +105,17 @@ const editTask = (span) => {
     parentLi.classList.add('input-description-bg');
     inputElement.classList.add('input-description-bg')
   }
-
+  
   if (inputElement) {
-    inputElement.addEventListener('focusout', () => {
-      if (inputElement.value !== '') {
-        taskFromLi.description = inputElement.value;
-        setLocalStorage();
-        removeDeleteIcon(deleteIcon);
-        changeInputToSpan(inputElement);
-      }
+    inputElement.addEventListener('blur', () => {
+      document.addEventListener('click', () => {
+        if (inputElement.value !== '') {
+          taskFromLi.description = inputElement.value;
+          setLocalStorage();
+          removeDeleteIcon(deleteIcon);
+          changeInputToSpan(inputElement);
+        }
+      })
     });
 
     inputElement.addEventListener('keyup', (event) => {

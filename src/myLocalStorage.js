@@ -12,4 +12,8 @@ const getLocalStorage = () => {
   todosTasks = data;
 };
 
-export { setLocalStorage, getLocalStorage, todosTasks }
+const changeTodosTasks = (newTodos) => {
+  todosTasks = newTodos;
+}
+
+export { setLocalStorage, getLocalStorage, todosTasks, changeTodosTasks }

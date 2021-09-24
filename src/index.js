@@ -1,21 +1,7 @@
 import statusUpdate from './statusUpdate.js';
-import { addTask, editTask, removeTask, addDeleteIcon } from './add-edit-remove.js';
+import { addTask, editTask, addDeleteIcon } from './add-edit-remove.js';
 import { setLocalStorage, getLocalStorage, todosTasks } from './myLocalStorage.js';
 import './style.css';
-
-// let todosTasks = [];
-
-// const setLocalStorage = () => {
-//   localStorage.setItem('todos', JSON.stringify(todosTasks));
-// };
-
-// const getLocalStorage = () => {
-//   const data = JSON.parse(localStorage.getItem('todos'));
-
-//   if (!data) return;
-
-//   todosTasks = data;
-// };
 
 const createAllLiElement = (todosTasks) => {
   const placeholder = document.getElementById('todolist-placeholder');
@@ -96,103 +82,6 @@ const checkingBoxesAndLine = () => {
 
   setLocalStorage();
 }
-
-// const addDeleteIcon = (span) => {
-//   const parentLi = span.parentNode;
-//   const deleteSpanIcon = document.createElement('span');
-
-//   deleteSpanIcon.classList.add('fas', 'fa-trash-alt', 'delete-icon');
-
-//   if (parentLi) {
-//     parentLi.appendChild(deleteSpanIcon);
-//   }
-// }
-
-
-// const removeDeleteIcon = (deleteIcon) => {
-//   const parentLi = deleteIcon.parentNode;
-//   if(parentLi) {
-//     parentLi.removeChild(deleteIcon);
-//   }
-// }
-
-// const changeInputToSpan = (inputDescription) => {
-//   const parentLi = inputDescription.parentNode;
-
-//   const span = document.createElement('span');
-//   span.classList.add('description');
-
-//   if(inputDescription.description === '') {
-//     console.log('Is empty')
-//     return
-//   }
-
-//   inputDescription.insertAdjacentElement('beforebegin', span);
-//   span.innerHTML = inputDescription.value;
-
-//   if(parentLi) {
-//     parentLi.removeChild(inputDescription);
-
-//     if(parentLi.classList.contains('input-description-bg')) {
-//       parentLi.classList.remove('input-description-bg');
-//     }
-//   }
-
-//   const allSpan = document.querySelectorAll('.description');
-
-//   allSpan.forEach((span) => {
-//     span.addEventListener('click', () => {
-//       addDeleteIcon(span);
-//       changeSpanToInput(span);
-//     });
-//   });
-// }
-
-// const changeSpanToInput = (span) => {
-  // const parentLi = span.parentNode;
-  // const deleteIcon = document.querySelector('.delete-icon');
-  // let taskOfLi;
-
-  // if (parentLi) {
-  //   taskOfLi = todosTasks.find((task) => task.index === +parentLi.id);
-  // }
-
-  // if (parentLi) {
-  //   parentLi.removeChild(span);
-  //   parentLi.classList.add('input-description-bg');
-  //   inputDescription.classList.add('input-description-bg')
-  // }
-
-  // deleteIcon.addEventListener('click', () => {
-  //   console.log("Run");
-  // });
-
-  // if (allInputDescriptions) {
-  //   allInputDescriptions.forEach((inputDescription) => {
-  //     inputDescription.addEventListener('focusout', () => {
-  //       if (taskOfLi) {
-  //         taskOfLi.description = inputDescription.value;
-  //         setLocalStorage();
-  //       }
-
-  //       removeDeleteIcon(deleteIcon);
-  //       changeInputToSpan(inputDescription);
-
-  //     });
-
-  //     inputDescription.addEventListener('keyup', (event) => {
-  //       if (event.code === 'Enter') {
-  //         if (taskOfLi) {
-  //           inputDescription.blur();
-  //           taskOfLi.description = inputDescription.value;
-  //           setLocalStorage();
-  //         }
-  //         removeDeleteIcon(deleteIcon);
-  //       }
-  //     });
-  //   });
-// }
-
 
 document.addEventListener('DOMContentLoaded', () => {
   const addInput = document.getElementById('add-input');
