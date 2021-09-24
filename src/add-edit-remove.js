@@ -22,7 +22,7 @@ const removeDeleteIcon = (deleteIcon) => {
   }
 }
 
-const changeInputToSpan = (inputDescription) => {
+const changeInputToSpan = (inputDescription, hasTheLineThroughClass) => {
   const parentLi = inputDescription.parentNode;
 
   const span = document.createElement('span');
@@ -30,6 +30,10 @@ const changeInputToSpan = (inputDescription) => {
 
   inputDescription.insertAdjacentElement('beforebegin', span);
   span.innerHTML = inputDescription.value;
+
+  if (hasTheLineThroughClass) {
+    span.classList.add('line-through');
+  }
 
   if(parentLi) {
     parentLi.removeChild(inputDescription);
@@ -80,9 +84,56 @@ const removeTask = (parentLi) => {
   setLocalStorage();
 }
 
+const removeAllCompletedTasks = () => {
+  const newTodos = todosTasks.filter((task) => !task.completed);
+  const todosToDelete = todosTasks.filter((task) => task.completed);
+  const allLi = document.querySelectorAll('.todoitem');
+  const ul = document.querySelector("ul");
+
+  const liToDelete = [];
+
+  allLi.forEach((li) => {
+    todosToDelete.forEach((todo) => {
+      if (todo.index === +li.id) {
+        liToDelete.push(li);
+      }
+    })
+  })
+
+  const allDeletedTodos = todosTasks.filter((task) => task.completed);
+
+  newTodos.forEach((todo) => {
+    allDeletedTodos.forEach((deleted) => {
+      if(todo.index > deleted.index) {
+        todo.index -= 1;
+      }
+
+      if(todo.index > newTodos.length) {
+        todo.index = newTodos.length;
+      }
+    })
+  });
+
+  changeTodosTasks(newTodos);
+
+  if(!allLi) {
+    const ulParent = ul.parentNode;
+    ulParent.removeChild(ul);
+  }
+
+  if(liToDelete) {
+    liToDelete.forEach((li) => {
+      ul.removeChild(li);
+    })
+  }
+
+  setLocalStorage();
+}
+
 const editTask = (span) => {
   const parentLi = span.parentNode;
   const deleteIcon = document.querySelector('.delete-icon');
+  let hasTheLineThroughClass = span.classList.contains('line-through');
 
   let taskFromLi;
 
@@ -113,11 +164,13 @@ const editTask = (span) => {
           taskFromLi.description = inputElement.value;
           setLocalStorage();
           removeDeleteIcon(deleteIcon);
-          changeInputToSpan(inputElement);
+          changeInputToSpan(inputElement, hasTheLineThroughClass);
         }
       })
     });
 
+    //-------------------------------------------------------------------------------------------------------
+    // TODO check if when Enter is pressed the todo is edit as usual
     inputElement.addEventListener('keyup', (event) => {
       if (event.code === 'Enter') {
         if (inputElement.value !== '') {
@@ -125,10 +178,12 @@ const editTask = (span) => {
           taskFromLi.description = inputElement.value;
           setLocalStorage();
           removeDeleteIcon(deleteIcon);
+          changeInputToSpan(inputElement, hasTheLineThroughClass);
         }
       }
     });
+    //-------------------------------------------------------------------------------------------------------
   }
 }
 
-export { addTask, editTask, removeTask, addDeleteIcon };
+export { addTask, editTask, removeTask, addDeleteIcon, removeAllCompletedTasks };

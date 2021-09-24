@@ -1,5 +1,5 @@
 import statusUpdate from './statusUpdate.js';
-import { addTask, editTask, addDeleteIcon } from './add-edit-remove.js';
+import { addTask, editTask, addDeleteIcon, removeAllCompletedTasks } from './add-edit-remove.js';
 import { setLocalStorage, getLocalStorage, todosTasks } from './myLocalStorage.js';
 import './style.css';
 
@@ -32,6 +32,10 @@ const createAllLiElement = (todosTasks) => {
 
   button.classList.add('button');
   button.innerHTML = 'Clear all completed';
+
+  button.addEventListener('click', () => {
+    removeAllCompletedTasks();
+  })
 
   const sortedLi = liArray.sort((a, b) => a.id - b.id);
 
