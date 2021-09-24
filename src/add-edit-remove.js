@@ -88,21 +88,19 @@ const removeTask = (parentLi) => {
 
 const removeAllCompletedTasks = () => {
   const newTodos = todosTasks.filter((task) => !task.completed);
-  const todosToDelete = todosTasks.filter((task) => task.completed);
+  const allDeletedTodos = todosTasks.filter((task) => task.completed);
   const allLi = document.querySelectorAll('.todoitem');
   const ul = document.querySelector('ul');
 
   const liToDelete = [];
 
   allLi.forEach((li) => {
-    todosToDelete.forEach((todo) => {
-      if (todo.index === +li.id) {
+    allDeletedTodos.forEach((deleted) => {
+      if (deleted.index === +li.id) {
         liToDelete.push(li);
       }
     });
   });
-
-  const allDeletedTodos = todosTasks.filter((task) => task.completed);
 
   newTodos.forEach((todo) => {
     allDeletedTodos.forEach((deleted) => {
