@@ -1,20 +1,21 @@
 import statusUpdate from './statusUpdate.js';
-import { addTask, editTask, removeTask } from './add-remove.js';
+import { addTask, editTask, removeTask, addDeleteIcon } from './add-edit-remove.js';
+import { setLocalStorage, getLocalStorage, todosTasks } from './myLocalStorage.js';
 import './style.css';
 
-let todosTasks = [];
+// let todosTasks = [];
 
-const setLocalStorage = () => {
-  localStorage.setItem('todos', JSON.stringify(todosTasks));
-};
+// const setLocalStorage = () => {
+//   localStorage.setItem('todos', JSON.stringify(todosTasks));
+// };
 
-const getLocalStorage = () => {
-  const data = JSON.parse(localStorage.getItem('todos'));
+// const getLocalStorage = () => {
+//   const data = JSON.parse(localStorage.getItem('todos'));
 
-  if (!data) return;
+//   if (!data) return;
 
-  todosTasks = data;
-};
+//   todosTasks = data;
+// };
 
 const createAllLiElement = (todosTasks) => {
   const placeholder = document.getElementById('todolist-placeholder');
@@ -96,82 +97,101 @@ const checkingBoxesAndLine = () => {
   setLocalStorage();
 }
 
-const changeInputToSpan = (inputDescription) => {
-  const parentLi = inputDescription.parentNode;
+// const addDeleteIcon = (span) => {
+//   const parentLi = span.parentNode;
+//   const deleteSpanIcon = document.createElement('span');
 
-  const span = document.createElement('span');
-  span.classList.add('description');
+//   deleteSpanIcon.classList.add('fas', 'fa-trash-alt', 'delete-icon');
 
-  inputDescription.insertAdjacentElement('beforebegin', span);
-  span.innerHTML = inputDescription.value;
+//   if (parentLi) {
+//     parentLi.appendChild(deleteSpanIcon);
+//   }
+// }
 
-  if(parentLi) {
-    parentLi.removeChild(inputDescription);
 
-    if(parentLi.classList.contains('input-description-bg')) {
-      parentLi.classList.remove('input-description-bg');
-    }
-  }
+// const removeDeleteIcon = (deleteIcon) => {
+//   const parentLi = deleteIcon.parentNode;
+//   if(parentLi) {
+//     parentLi.removeChild(deleteIcon);
+//   }
+// }
 
-  const allSpan = document.querySelectorAll('.description');
+// const changeInputToSpan = (inputDescription) => {
+//   const parentLi = inputDescription.parentNode;
 
-  allSpan.forEach((span) => {
-    span.addEventListener('click', () => {
-      changeSpanToInput(span);
-    });
-  });
-}
+//   const span = document.createElement('span');
+//   span.classList.add('description');
 
-const changeSpanToInput = (span) => {
-  const parentLi = span.parentNode;
-  let taskOfLi;
-  if (parentLi) {
-    taskOfLi = todosTasks.find((task) => task.index === +parentLi.id);
-  }
-  // console.log(taskOfLi)
+//   if(inputDescription.description === '') {
+//     console.log('Is empty')
+//     return
+//   }
 
-  const inputDescription = document.createElement('input');
-  inputDescription.type = 'text';
-  inputDescription.classList.add('input-description');
+//   inputDescription.insertAdjacentElement('beforebegin', span);
+//   span.innerHTML = inputDescription.value;
 
-  span.insertAdjacentElement('beforebegin', inputDescription);
+//   if(parentLi) {
+//     parentLi.removeChild(inputDescription);
 
-  inputDescription.value = span.innerHTML;
-  inputDescription.focus();
-  inputDescription.setSelectionRange(0, 0);
+//     if(parentLi.classList.contains('input-description-bg')) {
+//       parentLi.classList.remove('input-description-bg');
+//     }
+//   }
 
-  setLocalStorage();
+//   const allSpan = document.querySelectorAll('.description');
 
-  if (parentLi) {
-    parentLi.removeChild(span);
-    parentLi.classList.add('input-description-bg');
-    inputDescription.classList.add('input-description-bg')
-  }
+//   allSpan.forEach((span) => {
+//     span.addEventListener('click', () => {
+//       addDeleteIcon(span);
+//       changeSpanToInput(span);
+//     });
+//   });
+// }
 
-  const allInputDescriptions = document.querySelectorAll('.input-description');
+// const changeSpanToInput = (span) => {
+  // const parentLi = span.parentNode;
+  // const deleteIcon = document.querySelector('.delete-icon');
+  // let taskOfLi;
 
-  if (allInputDescriptions) {
-    allInputDescriptions.forEach((inputDescription) => {
-      inputDescription.addEventListener('focusout', () => {
-        if (taskOfLi) {
-          taskOfLi.description = inputDescription.value;
-          setLocalStorage();
-        }
-        changeInputToSpan(inputDescription);
-      });
+  // if (parentLi) {
+  //   taskOfLi = todosTasks.find((task) => task.index === +parentLi.id);
+  // }
 
-      inputDescription.addEventListener('keyup', (event) => {
-        if (event.code === 'Enter') {
-          if (taskOfLi) {
-            inputDescription.blur();
-            taskOfLi.description = inputDescription.value;
-            setLocalStorage();
-          }
-        }
-      });
-    });
-  }
-}
+  // if (parentLi) {
+  //   parentLi.removeChild(span);
+  //   parentLi.classList.add('input-description-bg');
+  //   inputDescription.classList.add('input-description-bg')
+  // }
+
+  // deleteIcon.addEventListener('click', () => {
+  //   console.log("Run");
+  // });
+
+  // if (allInputDescriptions) {
+  //   allInputDescriptions.forEach((inputDescription) => {
+  //     inputDescription.addEventListener('focusout', () => {
+  //       if (taskOfLi) {
+  //         taskOfLi.description = inputDescription.value;
+  //         setLocalStorage();
+  //       }
+
+  //       removeDeleteIcon(deleteIcon);
+  //       changeInputToSpan(inputDescription);
+
+  //     });
+
+  //     inputDescription.addEventListener('keyup', (event) => {
+  //       if (event.code === 'Enter') {
+  //         if (taskOfLi) {
+  //           inputDescription.blur();
+  //           taskOfLi.description = inputDescription.value;
+  //           setLocalStorage();
+  //         }
+  //         removeDeleteIcon(deleteIcon);
+  //       }
+  //     });
+  //   });
+// }
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -180,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   addInput.addEventListener('keyup', (event) => {
     if (event.code === 'Enter') {
-      if(addInput.value) {
+      if (addInput.value) {
         const newTask = addTask(todosTasks, addInput.value);
         todosTasks.push(newTask);
 
@@ -194,7 +214,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         allSpan.forEach((span) => {
           span.addEventListener('click', () => {
-            changeSpanToInput(span);
+            addDeleteIcon(span);
+            editTask(span);
           });
         });
       }
@@ -209,9 +230,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   allSpan.forEach((span) => {
     span.addEventListener('click', () => {
-      changeSpanToInput(span);
+      addDeleteIcon(span);
+
+      editTask(span);
     });
   });
 
   checkingBoxesAndLine();
-});
+
+})

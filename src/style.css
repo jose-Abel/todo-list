@@ -39,6 +39,7 @@ body {
 .todoitem {
   list-style: none;
   padding: 20px;
+  position: relative;
 }
 
 .input-checkbox {
@@ -63,12 +64,12 @@ body {
   -webkit-appearance: none;
 }
 
-.input-description:focus{
-  /* border:0;
-  outline: 0; */
-  /* -webkit-appearance: none; */
-}
-
 .input-description-bg {
   background-color: bisque;
+}
+
+.delete-icon {
+  position: absolute;
+  right: 20px;
+  cursor: pointer;
 }
