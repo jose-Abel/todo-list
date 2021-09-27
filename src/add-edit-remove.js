@@ -26,9 +26,13 @@ const removeDeleteIcon = (deleteIcon) => {
 
 const changeInputToSpan = (inputDescription, hasTheLineThroughClass) => {
   const parentLi = inputDescription.parentNode;
-
+  const removeIcon = inputDescription.nextElementSibling;
   const span = document.createElement('span');
   span.classList.add('description');
+
+  if (removeIcon) {
+    removeDeleteIcon(removeIcon);
+  }
 
   inputDescription.insertAdjacentElement('beforebegin', span);
   span.innerHTML = inputDescription.value;
@@ -155,7 +159,6 @@ const editTask = (span) => {
         if (inputElement.value !== '') {
           taskFromLi.description = inputElement.value;
           setLocalStorage();
-          removeDeleteIcon(deleteIcon);
           changeInputToSpan(inputElement, hasTheLineThroughClass);
         }
       });
