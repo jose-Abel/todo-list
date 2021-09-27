@@ -44,7 +44,9 @@ To start the webpack-dev-server, run the following command:
 
 ### Live Demo Server
 
-- [live-version](https://jose-abel-todo-app.netlify.app/)
+- [live-version with github pages](https://jose-abel.github.io/todo-list/)
+
+
 
 ### Tests
 
