@@ -73,12 +73,8 @@ const removeTask = (parentLi) => {
 
   const newTodos = todosTasks.filter((task) => task.index !== taskFromLi.index);
 
-  const [deletedTodo] = todosTasks.filter((task) => task.index === taskFromLi.index);
-
-  newTodos.forEach((todo) => {
-    if (todo.index > deletedTodo.index) {
-      todo.index -= 1;
-    }
+  newTodos.forEach((todo, index) => {
+    todo.index = index + 1;
   });
 
   changeTodosTasks(newTodos);
