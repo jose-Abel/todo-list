@@ -41,6 +41,7 @@ body {
   padding: 20px;
   position: relative;
   border-bottom: 1px solid gray;
+  display: flex;
 }
 
 .input-checkbox {
@@ -54,6 +55,12 @@ body {
 
 .line-through {
   text-decoration: line-through;
+}
+
+.description {
+  display: block;
+  overflow: hidden;
+  width: 100%;
 }
 
 .input-description {

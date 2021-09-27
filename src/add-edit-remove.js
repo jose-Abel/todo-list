@@ -26,9 +26,13 @@ const removeDeleteIcon = (deleteIcon) => {
 
 const changeInputToSpan = (inputDescription, hasTheLineThroughClass) => {
   const parentLi = inputDescription.parentNode;
-
+  const removeIcon = inputDescription.nextElementSibling;
   const span = document.createElement('span');
   span.classList.add('description');
+
+  if (removeIcon) {
+    removeDeleteIcon(removeIcon);
+  }
 
   inputDescription.insertAdjacentElement('beforebegin', span);
   span.innerHTML = inputDescription.value;
@@ -102,16 +106,8 @@ const removeAllCompletedTasks = () => {
     });
   });
 
-  newTodos.forEach((todo) => {
-    allDeletedTodos.forEach((deleted) => {
-      if (todo.index > deleted.index) {
-        todo.index -= 1;
-      }
-
-      if (todo.index > newTodos.length) {
-        todo.index = newTodos.length;
-      }
-    });
+  newTodos.forEach((todo, index) => {
+    todo.index = index + 1;
   });
 
   changeTodosTasks(newTodos);
@@ -163,7 +159,6 @@ const editTask = (span) => {
         if (inputElement.value !== '') {
           taskFromLi.description = inputElement.value;
           setLocalStorage();
-          removeDeleteIcon(deleteIcon);
           changeInputToSpan(inputElement, hasTheLineThroughClass);
         }
       });
