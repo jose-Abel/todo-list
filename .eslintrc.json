@@ -21,6 +21,7 @@
     "ignorePatterns": [
       "dist/",
       "build/",
-      "docs"
+      "docs",
+      "/main.js"
     ]
   }
