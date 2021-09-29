@@ -22,6 +22,7 @@
       "dist/",
       "build/",
       "docs",
-      "/main.js"
+      "/main.js",
+      "*.test.js"
     ]
   }
