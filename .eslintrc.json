@@ -23,6 +23,7 @@
       "build/",
       "docs",
       "/main.js",
-      "*.test.js"
+      "*.test.js",
+      "__mocks__/"
     ]
   }
