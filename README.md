@@ -75,6 +75,10 @@ CSS linters
 - GitHub: [Jose Abel Ramirez Frontany](https://github.com/jose-Abel)
 - Linkedin: [Jose Abel Ramirez Frontany](https://www.linkedin.com/in/jose-abel-ramirez-frontany-7674a842/)
 
+## Testing Co-Author: Leonardo Lopes da Paz\*\*
+- Github: [Leonardo Paz](https://github.com/leolpaz)
+- Linkedin: [Leonardo Paz](https://www.linkedin.com/in/leonardo-paz-a925611b5/)
+
 ## 🤝 Contributing
 
 Contributions, issues, and feature requests are welcome!
