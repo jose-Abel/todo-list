@@ -27,4 +27,4 @@ const changeTodosTasks = (newTodos) => {
 };
 
 const localStorage = new LocalStorageMock();
-export { localStorage, changeTodosTasks, todosTasks };
+export { LocalStorageMock, localStorage, changeTodosTasks, todosTasks };

@@ -6,8 +6,6 @@ const changeStatus = (todosTasks, checkbox) => {
   }
 
   checkbox.nextElementSibling.classList.toggle('line-through');
-
-  localStorage.removeItem('todos');
 };
 
 export default changeStatus;
