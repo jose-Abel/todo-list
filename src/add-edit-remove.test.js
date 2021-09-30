@@ -1,6 +1,7 @@
 import { JSDOM } from 'jsdom';
 import { addTask } from './add-edit-remove';
 import { removeTask } from './__mocks__/mockRemoveTask';
+import { removeAllCompletedTasks } from './__mocks__/removeAllCompletedTasks';
 import { editTask } from './__mocks__/editTask';
 import { todosTasks, localStorage } from './__mocks__/myLocalStorage';
 
@@ -104,3 +105,45 @@ describe('editTask function', () => {
     expect(taskFromLi.description).toBe(JSON.parse(localStorage.getItem('todos'))[0].description);
   });
 });
+
+
+describe('Remove all function', () => {
+  test('Check if elements are removed from the DOM', () => {
+    todosTasks.push({description: 'Do the laundry', completed: false, index: 2}, {description: 'Create mocking test', completed: true, index: 3}, {description: 'Finish Project', completed: false, index: 4}, {description: 'Prepare lunch', completed: true, index: 5});
+  document.body.innerHTML =
+      `<div id='todolist-placeholder'> `+
+        `<ul>` +
+          `<li class="todoitem" id=${todosTasks[0].index}><input type="checkbox" class="input-checkbox"> <span class="description">${todosTasks[0].description}</span> <span class="delete-icon"></span></li>` +
+          `<li class="todoitem" id=${todosTasks[1].index}><input type="checkbox" class="input-checkbox"> <span class="description">${todosTasks[1].description}</span> <span class="delete-icon"></span></li>` +
+          `<li class="todoitem" id=${todosTasks[2].index}><input type="checkbox" class="input-checkbox"> <span class="description">${todosTasks[2].description}</span> <span class="delete-icon"></span></li>` +
+          `<li class="todoitem" id=${todosTasks[3].index}><input type="checkbox" class="input-checkbox"> <span class="description">${todosTasks[3].description}</span> <span class="delete-icon"></span></li>` +
+          `<li class="todoitem" id=${todosTasks[4].index}><input type="checkbox" class="input-checkbox"> <span class="description">${todosTasks[4].description}</span> <span class="delete-icon"></span></li>` +
+        `</ul>` +
+      `</div>`;
+    removeAllCompletedTasks()
+    const taskList = document.querySelectorAll('li');
+    expect(taskList).toHaveLength(3);
+  })
+  test('Check if all completed elements are removed', () => {
+    //act
+    //assert
+    expect(todosTasks.length).toBe(3)
+  })
+  test('Check if both removed items are out of the array', () => {
+    const removedItems = [{description: 'Create mocking test', completed: true, index: 2}, {description: 'Prepare lunch', completed: true, index: 2}];
+
+    expect(todosTasks).not.toContain(removedItems);
+  })
+  test('Check if all the remaining items have completed set to false', () => {
+    //arrange
+    const completedArray = [];
+    //act
+    todosTasks.forEach((elements) => {
+      if(elements.completed === false) {
+        completedArray.push(elements.completed)
+      }
+    })
+    //assert
+    expect(completedArray).not.toContain(true);
+  })
+})

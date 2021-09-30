@@ -1,5 +1,5 @@
 TN:
-SF:src/add-edit-remove.js
+SF:src\add-edit-remove.js
 FN:5,(anonymous_0)
 FN:15,(anonymous_1)
 FN:20,(anonymous_2)
@@ -183,7 +183,7 @@ BRF:30
 BRH:0
 end_of_record
 TN:
-SF:src/myLocalStorage.js
+SF:src\myLocalStorage.js
 FN:5,(anonymous_0)
 FN:9,(anonymous_1)
 FN:17,(anonymous_2)
@@ -213,7 +213,7 @@ BRF:2
 BRH:0
 end_of_record
 TN:
-SF:src/statusUpdate.js
+SF:src\statusUpdate.js
 FN:1,(anonymous_0)
 FN:2,(anonymous_1)
 FNF:2
