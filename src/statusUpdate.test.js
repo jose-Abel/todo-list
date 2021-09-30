@@ -24,12 +24,15 @@ describe('statusUpdate function', () => {
     checkbox.dispatchEvent(event);
   
     test('The complete property changes when checked the checkbox', () => {
+
       // Assert
       expect(todosTasks[0].completed).toEqual(true);
     });
       
     test('The complete property changes back when checked the checkbox again', () => {
+        // Act
         checkbox.dispatchEvent(event);
+
         // Assert
         expect(todosTasks[0].completed).toEqual(false);
       });

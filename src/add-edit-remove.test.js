@@ -53,16 +53,23 @@ describe('removeTask function', () => {
   });
 
   test('Remove the element from the array', () => {
+    // Assert
     expect(todosTasks.length).toBe(1);
   });
 
   test('Check if localStorage updates', () => {
+    // Act
     const itemDescription = JSON.parse(localStorage.getItem('todos'))[0].description;
+
+    // Assert
     expect(itemDescription).toEqual(todosTasks[0].description);
   })
 
   test('Check if the removed item left local storage', () => {
+    // Act
     const newTasks = JSON.parse(localStorage.getItem('todos'));
+    
+    // Assert
     expect(todosTasks).toEqual(newTasks);
   })
 })
@@ -92,6 +99,7 @@ describe('editTask function', () => {
   });
 
   test('the value in the inner HTML of the span for the first todo changed when a click event is trigger', ()=>{
+    // Act
     inputElement.blur() 
     const event = new window.MouseEvent('click', { view: window, bubbles: true, cancelable: true }); 
     document.body.dispatchEvent(event) 
@@ -109,6 +117,7 @@ describe('editTask function', () => {
 
 describe('Remove all function', () => {
   test('Check if elements are removed from the DOM', () => {
+    //Arrange
     todosTasks.push({description: 'Do the laundry', completed: false, index: 2}, {description: 'Create mocking test', completed: true, index: 3}, {description: 'Finish Project', completed: false, index: 4}, {description: 'Prepare lunch', completed: true, index: 5});
   document.body.innerHTML =
       `<div id='todolist-placeholder'> `+
@@ -120,30 +129,35 @@ describe('Remove all function', () => {
           `<li class="todoitem" id=${todosTasks[4].index}><input type="checkbox" class="input-checkbox"> <span class="description">${todosTasks[4].description}</span> <span class="delete-icon"></span></li>` +
         `</ul>` +
       `</div>`;
+
+    // Act
     removeAllCompletedTasks()
     const taskList = document.querySelectorAll('li');
     expect(taskList).toHaveLength(3);
   })
   test('Check if all completed elements are removed', () => {
-    //act
-    //assert
+    // Assert
     expect(todosTasks.length).toBe(3)
-  })
-  test('Check if both removed items are out of the array', () => {
-    const removedItems = [{description: 'Create mocking test', completed: true, index: 2}, {description: 'Prepare lunch', completed: true, index: 2}];
+  });
 
+  test('Check if both removed items are out of the array', () => {
+    // Act
+    const removedItems = [{description: 'Create mocking test', completed: true, index: 2}, {description: 'Prepare lunch', completed: true, index: 2}];
+    
+    // Assert
     expect(todosTasks).not.toContain(removedItems);
-  })
+  });
+
   test('Check if all the remaining items have completed set to false', () => {
-    //arrange
+    // Arrange
     const completedArray = [];
-    //act
+    // Act
     todosTasks.forEach((elements) => {
       if(elements.completed === false) {
         completedArray.push(elements.completed)
       }
     })
-    //assert
+    // Assert
     expect(completedArray).not.toContain(true);
   })
 })

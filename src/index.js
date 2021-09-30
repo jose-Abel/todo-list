@@ -2,7 +2,9 @@ import statusUpdate from './statusUpdate.js';
 import {
   addTask, editTask, addDeleteIcon, removeAllCompletedTasks,
 } from './add-edit-remove.js';
-import { setLocalStorage, getLocalStorage, removeItem, todosTasks } from './myLocalStorage.js';
+import {
+  setLocalStorage, getLocalStorage, removeItem, todosTasks,
+} from './myLocalStorage.js';
 import './style.css';
 
 const createAllLiElement = (todosTasks) => {
