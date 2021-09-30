@@ -14,10 +14,14 @@ const getLocalStorage = () => {
   todosTasks = data;
 };
 
+const removeItem = () => {
+  localStorage.removeItem('todos');
+};
+
 const changeTodosTasks = (newTodos) => {
   todosTasks = newTodos;
 };
 
 export {
-  setLocalStorage, getLocalStorage, todosTasks, changeTodosTasks,
+  setLocalStorage, getLocalStorage, removeItem, todosTasks, changeTodosTasks,
 };

@@ -27,13 +27,9 @@ const editTask = (span) => {
     inputElement.classList.add('input-description-bg');
   }
 
-  console.log(taskFromLi)
-
   if (inputElement) {
     inputElement.addEventListener('blur', () => {
-      console.log('called blur')
       document.addEventListener('click', () => {
-        console.log('called click')
         if (inputElement.value !== '') {
           taskFromLi.description = inputElement.value;
           localStorage.setItem('todos', JSON.stringify(todosTasks));

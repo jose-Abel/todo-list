@@ -149,13 +149,9 @@ const editTask = (span) => {
     inputElement.classList.add('input-description-bg');
   }
 
-  console.log(taskFromLi)
-
   if (inputElement) {
     inputElement.addEventListener('blur', () => {
-      console.log('called blur')
       document.addEventListener('click', () => {
-        console.log('called click')
         if (inputElement.value !== '') {
           taskFromLi.description = inputElement.value;
           setLocalStorage();
@@ -166,7 +162,6 @@ const editTask = (span) => {
 
     inputElement.addEventListener('keyup', (event) => {
       if (event.code === 'Enter') {
-        console.log('enter pressed')
         if (inputElement.value !== '') {
           inputElement.blur();
           taskFromLi.description = inputElement.value;

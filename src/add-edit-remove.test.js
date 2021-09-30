@@ -2,11 +2,9 @@ import { JSDOM } from 'jsdom';
 import { addTask } from './add-edit-remove';
 import { removeTask } from './__mocks__/mockRemoveTask';
 import { editTask } from './__mocks__/editTask';
-import { LocalStorageMock, todosTasks, localStorage } from './__mocks__/myLocalStorage';
-
+import { todosTasks, localStorage } from './__mocks__/myLocalStorage';
 
 describe('addTask function', () => {
-  // Arrange
   // Act
   const result = addTask(todosTasks, 'Learning Jest');
 
@@ -40,12 +38,13 @@ describe('removeTask function', () => {
 
   document.body.innerHTML =
   '<ul>' +
-    `<li id=${todosTasks[0].index}><input> <span class="description">${todosTasks[0].description}</span> <span class="delete-icon"></span></li>` +
-    `<li id=${todosTasks[1].index}><input> <span class="description">${todosTasks[1].description}</span> <span class="delete-icon"></span></li>` +
-  '</ul>'
+    `<li class="todoitem" id=${todosTasks[0].index}><input type="checkbox" class="input-checkbox"> <span class="description">${todosTasks[0].description}</span> <span class="delete-icon"></span></li>` +
+    `<li class="todoitem" id=${todosTasks[1].index}><input type="checkbox" class="input-checkbox"> <span class="description">${todosTasks[1].description}</span> <span class="delete-icon"></span></li>` +
+  '</ul>';
+
   const parentLi = document.getElementById(`${todosTasks[1].index}`);
   removeTask(parentLi);
-  
+
   //Act
   test('Remove one task from the list', () => {
     const list = document.querySelectorAll('li');
@@ -69,9 +68,6 @@ describe('removeTask function', () => {
 
 describe('editTask function', () => {
   //Arrange
-  const localStorage2 = new LocalStorageMock();
-
-
   const firstLi = document.getElementById(todosTasks[0].index);
 
   const firstSpan = firstLi.querySelector('.description');
@@ -83,7 +79,6 @@ describe('editTask function', () => {
   }
 
   firstSpan.innerHTML = 'Something new';
-  console.log(firstSpan.parentNode)
 
   editTask(firstSpan);
 
@@ -95,14 +90,17 @@ describe('editTask function', () => {
 
   });
 
-  test('the value in the inner HTML of the span for the first todo changed when enter is pressed', ()=>{
-    inputElement.blur()
-    const evt = document.createEvent("MouseEvent");
-    evt.initMouseEvent("click", true, true)
-    document.body.dispatchEvent(evt)
+  test('the value in the inner HTML of the span for the first todo changed when a click event is trigger', ()=>{
+    inputElement.blur() 
+    const event = new window.MouseEvent('click', { view: window, bubbles: true, cancelable: true }); 
+    document.body.dispatchEvent(event) 
     
     // Assert
     expect(taskFromLi.description).toBe(inputElement.value);
+  });
 
+  test('the value in the inner HTML of the span for the first todo changed when a click event is trigger', ()=>{    
+    // Assert
+    expect(taskFromLi.description).toBe(JSON.parse(localStorage.getItem('todos'))[0].description);
   });
 });
