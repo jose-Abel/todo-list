@@ -1,12 +1,12 @@
 import { JSDOM } from 'jsdom';
 import { addTask } from './add-edit-remove';
 import { removeTask } from './__mocks__/mockRemoveTask';
+import { editTask } from './__mocks__/editTask';
 import { LocalStorageMock, todosTasks, localStorage } from './__mocks__/myLocalStorage';
-import {editTask, removeDeleteIcon, changeInputToSpan} from './add-edit-remove';
+
 
 describe('addTask function', () => {
   // Arrange
-  const todosTasks = [];
   // Act
   const result = addTask(todosTasks, 'Learning Jest');
 
@@ -27,7 +27,7 @@ describe('addTask function', () => {
 
   test('The index property of the returned object is equal to the length of the array pass as a first argument plus one more', () => {
     // Assert
-    expect(result.index).toEqual(todosTasks.length + 1);
+    expect(result.index).toEqual(todosTasks.length);
   });
 });
 
@@ -40,8 +40,8 @@ describe('removeTask function', () => {
 
   document.body.innerHTML =
   '<ul>' +
-    `<li id=${todosTasks[0].index}>${todosTasks[0].description}</li>` +
-    `<li id=${todosTasks[1].index}>${todosTasks[1].description}</li>` +
+    `<li id=${todosTasks[0].index}><input> <span class="description">${todosTasks[0].description}</span> <span class="delete-icon"></span></li>` +
+    `<li id=${todosTasks[1].index}><input> <span class="description">${todosTasks[1].description}</span> <span class="delete-icon"></span></li>` +
   '</ul>'
   const parentLi = document.getElementById(`${todosTasks[1].index}`);
   removeTask(parentLi);
@@ -71,38 +71,23 @@ describe('editTask function', () => {
   //Arrange
   const localStorage2 = new LocalStorageMock();
 
-  const todosTasks2 = [];
-  todosTasks2.push({description: 'Do the laundry', completed: false, index: 1}, {description: 'Create mocking test', completed: true, index: 2});
-  const dom2 = new JSDOM();
-  global.document2 = dom2.window.document;
-  global.window2 = dom2.window;
-  localStorage2.setItem('todos', JSON.stringify(todosTasks2));
 
-  document2.body.innerHTML =
-  '<ul>' +
-    `<li id=${todosTasks2[0].index}><input> <span class="description">${todosTasks2[0].description}</span> <span class="delete-icon"></span></li>` +
-    `<li id=${todosTasks2[1].index}><input> <span class="description">${todosTasks2[1].description}</span> <span class="delete-icon"></span></li>` +
-  '</ul>'
-
-  const firstLi = document2.getElementById(todosTasks2[0].index);
+  const firstLi = document.getElementById(todosTasks[0].index);
 
   const firstSpan = firstLi.querySelector('.description');
-
-  const setLocalStorage = jest.fn();
-
-  setLocalStorage.mockImplementation(() => localStorage2.setItem('todos', JSON.stringify(todosTasks2)));
 
   let taskFromLi;
 
   if (firstLi) {
-    taskFromLi = todosTasks2.find((task) => task.index === +firstLi.id);
+    taskFromLi = todosTasks.find((task) => task.index === +firstLi.id);
   }
 
   firstSpan.innerHTML = 'Something new';
+  console.log(firstSpan.parentNode)
 
   editTask(firstSpan);
 
-  const inputElement = document2.querySelector('.input-description');
+  const inputElement = document.querySelector('.input-description');
 
   test('the value of the input changed by the inner HTML of the span', ()=>{
     // Assert
@@ -111,17 +96,11 @@ describe('editTask function', () => {
   });
 
   test('the value in the inner HTML of the span for the first todo changed when enter is pressed', ()=>{
-    // Act
-    inputElement.blur();
-
-    global['MouseEvent'] = window.MouseEvent;
-    let event = new MouseEvent('click');
-    document2.dispatchEvent(event);
-
-    // global['KeyboardEvent'] = window.Event;
-    // let event = new KeyboardEvent('keyup', {code: 'Enter'});
-    // document2.dispatchEvent(event);
-
+    inputElement.blur()
+    const evt = document.createEvent("MouseEvent");
+    evt.initMouseEvent("click", true, true)
+    document.body.dispatchEvent(evt)
+    
     // Assert
     expect(taskFromLi.description).toBe(inputElement.value);
 
